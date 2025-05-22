@@ -40,4 +40,16 @@ npm run dev
 ##test
 php artisan test
 
+## test call
+php artisan test tests/Feature/Calls/PhoneCallFeatureTest.php
+
+#data base migrations
+php artisan migrate:fresh --seed
+#check routes
+php artisan route:list
+
+
+## php.ini activate
+extension=pdo_pgsql
+extension=pgsql
 ```
