@@ -56,6 +56,7 @@ class PhoneMakeCallTest extends TestCase
             'number' => $userPhoneNumber,
             'verified_at' => now(),
         ]);
+
         $callMock = (object) [
             'sid' => $callSid,
             'status' => 'initiated',
@@ -243,7 +244,7 @@ class PhoneMakeCallTest extends TestCase
     public function test_twilio_webhook_generates_twiml_to_dial_destination_number()
     {
         $destinationNumber = '+15553334444';
-        $response = $this->postJson('/api/twilio/voice/twiml', [
+        $response = $this->postJson('/twilio/voice/twiml', [
             'To' => $destinationNumber
         ]);
         $response->assertStatus(200);
@@ -253,7 +254,7 @@ class PhoneMakeCallTest extends TestCase
     }
     public function test_twilio_webhook_generates_twiml_with_error_message_if_destination_missing()
     {
-        $response = $this->postJson('/api/twilio/voice/twiml', [
+        $response = $this->postJson('/twilio/voice/twiml', [
             'To' => null
         ]);
         $response->assertStatus(200);
@@ -274,7 +275,7 @@ class PhoneMakeCallTest extends TestCase
             'status' => 'initiated',
         ]);
 
-        $response = $this->postJson('/api/twilio/voice/status-callback', [
+        $response = $this->postJson('/twilio/voice/status-callback', [
             'CallSid' => $callSid,
             'CallStatus' => 'ringing',
             'To' => $destinationNumber,

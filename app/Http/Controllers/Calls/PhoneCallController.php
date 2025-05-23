@@ -31,7 +31,7 @@ class PhoneCallController extends Controller
         $phoneNumber = $request->phone_number;
 
         $verifyServiceSid = config('services.twilio.verify_service_sid');
-        if (!$verifyServiceSid) {
+        if (empty($verifyServiceSid)) {
             return response()->json(['message' => 'Twilio Verify service not configured.'], 500);
         }
 
@@ -106,8 +106,8 @@ class PhoneCallController extends Controller
             return response()->json(['message' => 'User phone number not registered or verified.'], 400);
         }
 
-        // $fromNumber = $phoneRecord->number;
-        $fromNumber = config('services.twilio.from');
+        $usePhoneNumberTwilio = config('services.twilio.use_phone_number');
+        $fromNumber = $usePhoneNumberTwilio ? config('services.twilio.from') : $phoneRecord->number;
         $toNumber = $request->destination_number;
 
         $callLog = CallLog::create([

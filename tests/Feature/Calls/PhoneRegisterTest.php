@@ -12,7 +12,7 @@ use Twilio\Rest\Verify\V2\Service\VerificationList;
 use Twilio\Rest\Verify\V2\Service\VerificationCheckList;
 use Twilio\Rest\Verify\V2\Service\VerificationInstance;
 use Twilio\Rest\Verify\V2\Service\VerificationCheckInstance;
-
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Twilio\Exceptions\TwilioException;
 
 
@@ -22,6 +22,7 @@ class PhoneRegisterTest extends TestCase
 {
 
     use RefreshDatabase;
+
 
     protected $user;
     protected $twilioMock;
@@ -60,7 +61,7 @@ class PhoneRegisterTest extends TestCase
     }
     protected function tearDown(): void
     {
-        Mockery::close(); // close mockery every test
+        Mockery::close();
         parent::tearDown();
     }
 
@@ -142,7 +143,7 @@ class PhoneRegisterTest extends TestCase
     }
     public function test_phone_number_registration_fails_if_verify_sid_not_configured()
     {
-        Config::set('twilio.verify_service_sid', '');
+        Config::set('services.twilio.verify_service_sid', '');
 
         $phoneNumber = '+15551234567';
 
@@ -301,7 +302,6 @@ class PhoneRegisterTest extends TestCase
     public function phone_number_verification_fails_if_verify_sid_not_configured()
     {
         Config::set('twilio.verify_service_sid', '');
-
         $phoneNumber = '+15551234567';
         PhoneNumber::create([
             'user_id' => $this->user->id,
