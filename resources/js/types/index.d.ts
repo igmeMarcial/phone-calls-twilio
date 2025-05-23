@@ -4,6 +4,7 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user: User;
+    phone_number: UserPhoneNumber | null;
 }
 
 export interface BreadcrumbItem {
@@ -26,6 +27,12 @@ export interface SharedData extends PageProps {
     sidebarOpen: boolean;
 }
 
+export interface UserPhoneNumber {
+    id: number;
+    number: string;
+    is_verified: boolean;
+    verified_at: string | null;
+  }
 export interface User {
     id: number;
     name: string;

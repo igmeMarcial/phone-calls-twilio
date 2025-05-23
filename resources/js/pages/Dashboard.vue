@@ -2,7 +2,15 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+import PhoneNumberForm from '@/components/make-call/PhoneNumberForm.vue';
+import VerifyPhoneForm from '@/components/make-call/VerifyPhoneForm.vue';
+import MakeCallForm from '@/components/make-call/MakeCallForm.vue';
+import CallHistory from '@/components/make-call/CallHistory.vue';
+import { usePage } from '@inertiajs/vue3';
+import { SharedData, UserPhoneNumber } from '@/types';
+
+const page = usePage<SharedData>();
+const phoneProps = page.props.auth.phone_number as UserPhoneNumber;
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -18,18 +26,12 @@ const breadcrumbs: BreadcrumbItem[] = [
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="grid auto-rows-min gap-4 md:grid-cols-3">
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
-                <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                    <PlaceholderPattern />
-                </div>
+                <PhoneNumberForm/>
+                <VerifyPhoneForm v-if="phoneProps && !phoneProps.is_verified"/>
+                <MakeCallForm/>
             </div>
-            <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min">
-                <PlaceholderPattern />
+            <div class="relative min-h-[100vh] p-4 flex-1 rounded-xl border border-sidebar-border/70 dark:border-sidebar-border md:min-h-min">
+                <CallHistory />
             </div>
         </div>
     </AppLayout>
