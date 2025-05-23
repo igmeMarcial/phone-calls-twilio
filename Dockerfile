@@ -23,6 +23,8 @@ RUN apk add --no-cache \
     gcc \
     g++ \
     make \
+    postgresql-client \
+    libpq \
     bash
 
 
@@ -33,6 +35,7 @@ RUN docker-php-ext-configure gd \
 
 
 RUN docker-php-ext-install -j$(nproc) \
+    pdo_pgsql \
     pdo \
     pdo_mysql \
     pdo_sqlite \
