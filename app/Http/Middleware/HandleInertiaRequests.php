@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+        $phone = optional($request->user())->phoneNumber;
 
         return [
             ...parent::share($request),
@@ -45,12 +46,18 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'phone_number' => $phone ? [
+                    'id' => $phone->id,
+                    'number' => $phone->number,
+                    'is_verified' => $phone->is_verified,
+                    'verified_at' => $phone->verified_at ? $phone->verified_at->toDateTimeString() : null,
+                ] : null,
             ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'sidebarOpen' => !$request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }
 }
