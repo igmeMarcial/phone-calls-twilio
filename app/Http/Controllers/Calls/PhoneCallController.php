@@ -107,9 +107,10 @@ class PhoneCallController extends Controller
         }
 
         $usePhoneNumberTwilio = config('services.twilio.use_phone_number');
-        $fromNumber = $usePhoneNumberTwilio ? config('services.twilio.from') : $phoneRecord->number;
+        $twilioFromNumber = config('services.twilio.from');
+        $fromNumber = $usePhoneNumberTwilio && !empty($twilioFromNumber) ? $twilioFromNumber : $phoneRecord->number;
         $toNumber = $request->destination_number;
-
+        Log::info('Making call from ' . $fromNumber);
         $callLog = CallLog::create([
             'user_id' => $user->id,
             'phone_number_id' => $phoneRecord->id,
@@ -137,6 +138,14 @@ class PhoneCallController extends Controller
             $callLog->twilio_call_sid = $call->sid;
             $callLog->status = $call->status;
             $callLog->save();
+
+            Log::info("Call initiated successfully via Twilio.", [
+                'user_id' => $user->id,
+                'from' => $fromNumber,
+                'to' => $toNumber,
+                'call_sid' => $call->sid,
+                'log_id' => $callLog->id
+            ]);
 
             return response()->json(['message' => 'Call initiated.', 'call_sid' => $call->sid, 'log_id' => $callLog->id], 200);
 
