@@ -61,6 +61,13 @@ php artisan route:list
 extension=pdo_pgsql
 extension=pgsql
 
+
+### Docker
+## Build the Docker image
+docker build -t laravel-app .
+## Run the Docker container
+docker run -p 8000:80 laravel-app
+
 ## 🛠 Additional Configuration (SSL errors)
 
 If you encounter SSL certificate errors with Twilio, make sure to download and link the latest `cacert.pem` file in your `php.ini`:
