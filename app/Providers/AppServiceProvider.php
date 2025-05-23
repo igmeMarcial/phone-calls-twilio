@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Log;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,7 +13,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(Client::class, function () {
+            $sid = config('services.twilio.sid');
+            $token = config('services.twilio.token');
+            if (empty($sid) || empty($token)) {
+                Log::error('Twilio credentials (SID or Auth Token) are not configured.');
+            }
+            return new Client($sid, $token);
+        });
     }
 
     /**
@@ -19,8 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Route::prefix('api')
-            ->middleware('api')
-            ->group(base_path('routes/api.php'));
     }
 }
+
+
