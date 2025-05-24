@@ -76,7 +76,6 @@ const submitForm = async () => {
 
     try {
         const response = await axios.post('/api/user/phone/register-request', { phone_number: phoneNumber.value });
-        console.log('Registration request successful:', response.data);
         const updatedPhoneData = response.data.phone_number_data as UserPhoneNumber | null; 
         if (updatedPhoneData) {
              originalPhoneNumber.value = updatedPhoneData.number;
@@ -85,6 +84,7 @@ const submitForm = async () => {
              originalPhoneNumber.value = phoneNumber.value;
              isVerified.value = false;
         }
+        emit('feedback', { type: 'success', message:'Verification code sent.' });
         formState.success = response.data.message || 'Verification code sent.'; 
         emit('numberRegistered', response.data); 
     } catch (error) {

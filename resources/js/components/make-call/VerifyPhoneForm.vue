@@ -1,11 +1,12 @@
 
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'; 
+import { ref, reactive, computed, onMounted } from 'vue'; 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import axios from 'axios'; 
 import { isAxiosError } from 'axios'; 
+import { usePhoneNumber } from '@/composables/usePhoneNumber';
 
 const emit = defineEmits<{
     (event: 'numberVerified'): void; 
@@ -19,6 +20,16 @@ const formState = reactive({
     generalError: null as string | null, 
     successMessage: null as string | null,
 });
+
+const {
+  phoneNumber,
+  isVerified,
+  error,
+  isLoading,
+  fetchPhoneNumber
+} = usePhoneNumber();
+
+onMounted(fetchPhoneNumber);
 
 const validateCode = (): boolean => {
     formState.validationErrors = {};
@@ -104,7 +115,7 @@ const displayCodeError = computed(() => {
         </div>
 
         <Button
-            :disabled="formState.isProcessing" 
+            :disabled="formState.isProcessing || isVerified" 
             type="submit"
             class="btn cursor-pointer" 
         >
