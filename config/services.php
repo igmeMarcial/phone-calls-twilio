@@ -40,6 +40,9 @@ return [
         'from' => env('TWILIO_PHONE_NUMBER'),
         'verify_service_sid' => env('TWILIO_VERIFY_SERVICE_SID'),
         'use_phone_number' => env('TWILIO_USE_PHONE_NUMBER'),
+        'api_key_sid' => env('TWILIO_API_KEY_SID'),
+        'api_key_secret' => env('TWILIO_API_KEY_SECRET'),
+        'twiml_app_sid' => env('TWILIO_TWIML_APP_SID'),
     ]
 
 ];

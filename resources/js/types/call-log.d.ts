@@ -17,3 +17,15 @@ export interface CallLog {
     // user?: User; 
     // phoneNumber?: PhoneNumber;
 }
+
+
+export type CallState = 
+  | 'idle' 
+  | 'confirming' 
+  | 'requesting_permission' 
+  | 'initiating' 
+  | 'ringing' 
+  | 'connected' 
+  | 'ended' 
+  | 'ending' 
+  | 'failed';
