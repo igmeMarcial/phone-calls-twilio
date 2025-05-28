@@ -27,7 +27,7 @@ php /app/artisan view:clear
 php /app/artisan view:cache
 
 # Run migrations (opcional)
-php /app/artisan migrate --force
+# php /app/artisan migrate --force
 
 # Iniciar supervisord
 exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
